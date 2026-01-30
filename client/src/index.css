@@ -65,49 +65,54 @@
   --elevate-2: rgba(255, 255, 255, 0.09);
 
   /* Rave / Dark Future tokens (H S% L%) */
-  --background: 252 38% 6%;
+  --background: 222 47% 4%;
+  /* Darker Deep Blue Black */
   --foreground: 210 40% 96%;
 
-  --card: 255 35% 9%;
+  --card: 222 47% 11%;
   --card-foreground: 210 40% 96%;
-  --popover: 255 35% 9%;
+  --popover: 222 47% 11%;
   --popover-foreground: 210 40% 96%;
 
-  --border: 250 30% 18%;
-  --card-border: 250 30% 18%;
+  --border: 217 91% 60%;
+  /* Blue */
+  --card-border: 217 91% 60%;
 
-  --primary: 268 96% 66%;
-  --primary-foreground: 255 50% 10%;
+  --primary: 217 91% 60%;
+  /* Blue */
+  --primary-foreground: 222 47% 11%;
 
-  --secondary: 200 96% 62%;
-  --secondary-foreground: 240 40% 10%;
+  --secondary: 190 90% 50%;
+  /* Cyan */
+  --secondary-foreground: 222 47% 11%;
 
-  --muted: 250 25% 14%;
-  --muted-foreground: 220 14% 74%;
+  --muted: 217 30% 18%;
+  --muted-foreground: 215 20% 75%;
 
-  --accent: 316 95% 64%;
-  --accent-foreground: 255 50% 10%;
+  --accent: 200 95% 60%;
+  /* Light Blue */
+  --accent-foreground: 222 47% 11%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
 
-  --input: 250 30% 22%;
-  --ring: 268 96% 66%;
+  --input: 217 30% 18%;
+  --ring: 217 91% 60%;
 
-  --chart-1: 268 96% 66%;
-  --chart-2: 200 96% 62%;
-  --chart-3: 316 95% 64%;
+  --chart-1: 217 91% 60%;
+  --chart-2: 190 90% 50%;
+  --chart-3: 200 95% 60%;
   --chart-4: 130 78% 55%;
   --chart-5: 40 95% 60%;
 
-  --sidebar: 252 38% 6%;
+  --sidebar: 222 47% 6%;
   --sidebar-foreground: 210 40% 96%;
-  --sidebar-border: 250 30% 18%;
-  --sidebar-primary: 268 96% 66%;
-  --sidebar-primary-foreground: 255 50% 10%;
-  --sidebar-accent: 250 25% 14%;
+  --sidebar-border: 217 30% 18%;
+  --sidebar-primary: 217 91% 60%;
+  --sidebar-primary-foreground: 222 47% 11%;
+  --sidebar-accent: 217 30% 18%;
   --sidebar-accent-foreground: 210 40% 96%;
-  --sidebar-ring: 268 96% 66%;
+  --sidebar-ring: 217 91% 60%;
 
   --font-sans: "Space Grotesk", system-ui, -apple-system, Segoe UI, Roboto, Inter,
     "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
@@ -140,9 +145,6 @@
   --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
 }
 
-.dark {
-  /* Keep same palette (dark-first) */
-}
 
 @layer base {
   * {
@@ -156,9 +158,9 @@
   body {
     @apply font-sans antialiased bg-background text-foreground;
     background-image:
-      radial-gradient(800px circle at 15% 10%, hsl(268 96% 66% / 0.18), transparent 55%),
-      radial-gradient(800px circle at 85% 0%, hsl(200 96% 62% / 0.12), transparent 60%),
-      radial-gradient(900px circle at 50% 100%, hsl(316 95% 64% / 0.10), transparent 60%);
+      radial-gradient(800px circle at 15% 10%, hsl(217 91% 60% / 0.01), transparent 55%),
+      radial-gradient(800px circle at 85% 0%, hsl(190 90% 50% / 0.008), transparent 60%),
+      radial-gradient(900px circle at 50% 100%, hsl(200 95% 60% / 0.005), transparent 60%);
     background-attachment: fixed;
   }
 }
@@ -174,11 +176,7 @@
     pointer-events: none;
   }
 
-  .no-default-hover-elevate {
-  }
 
-  .no-default-active-elevate {
-  }
 
   .toggle-elevate::before,
   .toggle-elevate-2::before {
@@ -238,29 +236,25 @@
 
   .rave-grid {
     background-image:
-      linear-gradient(to right, hsl(268 96% 66% / 0.06) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(200 96% 62% / 0.05) 1px, transparent 1px);
+      linear-gradient(to right, hsl(217 91% 60% / 0.002) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(190 90% 50% / 0.002) 1px, transparent 1px);
     background-size: 56px 56px;
     mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 70%);
   }
 
   .text-neon {
     text-shadow:
-      0 0 12px hsl(268 96% 66% / 0.55),
-      0 0 36px hsl(316 95% 64% / 0.25);
+      0 0 12px hsl(217 91% 60% / 0.6),
+      0 0 36px hsl(190 90% 50% / 0.3);
   }
 
   .glass {
-    background: linear-gradient(
-      135deg,
-      hsl(255 35% 9% / 0.65),
-      hsl(255 35% 9% / 0.35)
-    );
-    border: 1px solid hsl(250 30% 22% / 0.9);
+    background: hsl(217 91% 32% / 0.25);
+    border: 1px solid hsl(217 91% 60% / 0.2);
     box-shadow:
-      0 0 0 1px hsl(268 96% 66% / 0.05) inset,
+      0 0 0 1px hsl(217 91% 60% / 0.05) inset,
       0 18px 70px hsl(0 0% 0% / 0.55);
-    backdrop-filter: blur(14px);
+    backdrop-filter: blur(20px);
   }
 
   .noise::before {
@@ -268,7 +262,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.08;
+    opacity: 0.005;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
   }

@@ -1,70 +1,68 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { ArrowRight, Download, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowRight, Download, Github, Linkedin, Mail, GraduationCap, BookOpen, School } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 const profile = {
   name: "Rakesh G",
-  headline: "Creative Developer · Engineer · Problem Solver",
+  headline: "CSE Student",
   blurb:
-    "I build fast, polished interfaces with a taste for motion, systems, and neon-lit details.",
+    "Building through challenges. Growing through code.",
   location: "India",
   socials: {
     github: "https://github.com/",
     linkedin: "https://www.linkedin.com/",
-    email: "mailto:rakesh@example.com",
+    email: "mailto:rakeshgofficial07@gmail.com",
   },
 };
 
 const projects = [
   {
-    id: "neon-dashboard",
-    title: "Neon Metrics Dashboard",
+    id: "vr-academy",
+    title: "VR Academy",
     description:
-      "A rave-grade UI system with animated charts, glass panels, and keyboard-friendly navigation.",
-    stack: ["React", "TypeScript", "Recharts"],
-    href: "#projects",
+      "VR Academy is a virtual reality-based educational platform designed to offer tuition support for all students, promoting an effective and interactive learning environment.",
+    stack: ["HTML", "CSS", "JavaScript", "VR"],
+    href: "https://github.com/Thenameisrakesh/VR_Academy",
+    stars: 1,
   },
   {
-    id: "motion-library",
-    title: "Motion Component Library",
+    id: "shiv-clouds",
+    title: "Shiv Furniture Cloud",
     description:
-      "Reusable micro-interactions (hover glow, magnetic buttons, springy transitions) packaged as components.",
-    stack: ["Framer Motion", "Tailwind"],
-    href: "#projects",
+      "Full-stack accounting and inventory management solution for furniture manufacturers. Streamlines sales, purchases, invoicing, payments, and financial reporting.",
+    stack: ["JavaScript", "Node.js", "Cloud"],
+    href: "https://github.com/Thenameisrakesh/shiv-clouds",
+    stars: 0,
   },
   {
-    id: "three-bg",
-    title: "Interactive Orb Backdrop",
+    id: "eco-finds",
+    title: "Eco-finds",
     description:
-      "Pointer-reactive gradients that feel 3D without heavy rendering cost. Optimized for smoothness.",
-    stack: ["Canvas", "CSS", "Motion"],
-    href: "#projects",
-  },
-];
-
-const experience = [
-  {
-    id: "exp-1",
-    title: "Frontend Engineer",
-    org: "Your Company",
-    timeframe: "2024  Present",
-    bullets: [
-      "Shipped responsive UI for core flows; improved perceived performance with motion + skeletons.",
-      "Built a design system with tokens, components, and accessibility defaults.",
-      "Partnered with product to iterate quickly and ship clean, maintainable code.",
-    ],
+      "An eco-friendly product discovery platform built with modern web technologies, focusing on sustainable shopping and environmental consciousness.",
+    stack: ["TypeScript", "React", "Tailwind"],
+    href: "https://github.com/Thenameisrakesh/Eco-finds",
+    stars: 0,
   },
   {
-    id: "exp-2",
-    title: "Intern / Project Developer",
-    org: "Your Org",
-    timeframe: "2023  2024",
-    bullets: [
-      "Prototyped ideas end-to-end with React + TypeScript.",
-      "Owned UI polish: spacing, typography, states, and interactions.",
-    ],
+    id: "sky-smart",
+    title: "Sky-Smart",
+    description:
+      "A smart weather and environmental monitoring application with real-time data visualization and intelligent forecasting capabilities.",
+    stack: ["TypeScript", "React", "APIs"],
+    href: "https://github.com/Thenameisrakesh/Sky-Smart",
+    stars: 0,
+  },
+  {
+    id: "mini-project-2026",
+    title: "Mini Project 2026",
+    description:
+      "Latest academic project showcasing full-stack development skills with modern JavaScript frameworks and best practices.",
+    stack: ["JavaScript", "React", "Node.js"],
+    href: "https://github.com/Thenameisrakesh/Mini-project-2026",
+    stars: 0,
   },
 ];
 
@@ -80,6 +78,11 @@ const skills = [
     items: ["Node.js", "REST", "Auth basics"],
   },
   {
+    id: "s-database",
+    title: "Database",
+    items: ["MySQL"],
+  },
+  {
     id: "s-tools",
     title: "Tools",
     items: ["Git", "Figma", "Vite", "Testing mindset"],
@@ -87,7 +90,7 @@ const skills = [
   {
     id: "s-soft",
     title: "Soft Skills",
-    items: ["Communication", "Ownership", "Curiosity", "Problem solving"],
+    items: ["Communication", "Hardworking", "Self-Confidence", "Problem solving"],
   },
 ];
 
@@ -98,7 +101,7 @@ function cn(...c: Array<string | false | null | undefined>) {
 function NeonPill({ children }: { children: React.ReactNode }) {
   return (
     <span
-      className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/80"
+      className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-950/40 px-3 py-1 text-xs text-white/80"
       data-testid="pill-metadata"
     >
       <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--primary))] shadow-[0_0_24px_hsl(var(--primary)/0.45)]" />
@@ -110,15 +113,20 @@ function NeonPill({ children }: { children: React.ReactNode }) {
 function SectionTitle({
   kicker,
   title,
+  kickerClassName,
 }: {
   kicker: string;
   title: string;
+  kickerClassName?: string;
 }) {
   return (
     <div className="flex items-end justify-between gap-6">
       <div>
         <p
-          className="font-mono text-xs tracking-widest text-white/55"
+          className={cn(
+            "font-mono text-xs tracking-widest text-white/55",
+            kickerClassName
+          )}
           data-testid={`text-kicker-${kicker.toLowerCase()}`}
         >
           {kicker}
@@ -131,7 +139,7 @@ function SectionTitle({
         </h2>
       </div>
       <div className="hidden md:block">
-        <div className="h-10 w-10 rounded-full border border-white/10 bg-white/5" />
+        <div className="h-10 w-10 rounded-full border border-blue-500/20 bg-blue-950/30" />
       </div>
     </div>
   );
@@ -166,13 +174,13 @@ function TopNav() {
       <div className="mx-auto max-w-6xl px-4">
         <div
           className={cn(
-            "glass mt-4 flex items-center justify-between rounded-2xl px-4 py-3",
-            "border border-white/10",
+            "mt-4 flex items-center justify-between rounded-2xl px-4 py-3",
+            "bg-blue-950/50 backdrop-blur-xl border border-blue-500/20",
           )}
         >
           <div className="flex items-center gap-3">
             <div
-              className="grid h-9 w-9 place-items-center rounded-xl bg-white/5"
+              className="grid h-9 w-9 place-items-center rounded-xl bg-blue-950/30"
               data-testid="img-avatar"
               aria-hidden="true"
             >
@@ -194,10 +202,9 @@ function TopNav() {
             </div>
           </div>
 
-          <div className="hidden items-center gap-1 md:flex">
+          <div className="hidden items-center gap-1 md:flex md:ml-auto md:mr-4">
             {[
               { label: "About", href: "#about" },
-              { label: "Experience", href: "#experience" },
               { label: "Skills", href: "#skills" },
               { label: "Projects", href: "#projects" },
               { label: "Education", href: "#education" },
@@ -223,7 +230,7 @@ function TopNav() {
               target="_blank"
               rel="noreferrer"
               className={cn(
-                "grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/5",
+                "grid h-10 w-10 place-items-center rounded-xl border border-blue-500/20 bg-blue-950/30",
                 "transition hover:bg-white/10",
               )}
               data-testid="link-github"
@@ -236,7 +243,7 @@ function TopNav() {
               target="_blank"
               rel="noreferrer"
               className={cn(
-                "grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/5",
+                "grid h-10 w-10 place-items-center rounded-xl border border-blue-500/20 bg-blue-950/30",
                 "transition hover:bg-white/10",
               )}
               data-testid="link-linkedin"
@@ -247,7 +254,7 @@ function TopNav() {
             <a
               href={profile.socials.email}
               className={cn(
-                "grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/5",
+                "grid h-10 w-10 place-items-center rounded-xl border border-blue-500/20 bg-blue-950/30",
                 "transition hover:bg-white/10",
               )}
               data-testid="link-email"
@@ -295,7 +302,7 @@ function Hero() {
   }, [mx, my]);
 
   return (
-    <section className="relative pt-28 md:pt-32" data-testid="section-hero">
+    <section className="relative pt-36 md:pt-48" data-testid="section-hero">
       <div className="rave-grid absolute inset-0 -z-10" aria-hidden="true" />
 
       <div className="mx-auto max-w-6xl px-4">
@@ -315,12 +322,12 @@ function Hero() {
               <h1
                 className={cn(
                   "mt-6 font-[700] tracking-[-0.03em]",
-                  "text-4xl text-white md:text-6xl",
+                  "text-3xl text-white md:text-5xl",
                 )}
                 data-testid="text-hero-title"
               >
                 <span className="block">{profile.name}</span>
-                <span className="mt-2 block text-balance text-white/85">
+                <span className="mt-2 block text-white/85">
                   <span className="text-neon">{profile.headline}</span>
                 </span>
               </h1>
@@ -332,7 +339,7 @@ function Hero() {
                 {profile.blurb}
               </p>
 
-              <div className="mt-7 flex flex-wrap items-center gap-3">
+              <div className="mt-16 flex flex-wrap items-center gap-3">
                 <Button
                   asChild
                   className={cn(
@@ -350,8 +357,8 @@ function Hero() {
                 <Button
                   variant="outline"
                   className={cn(
-                    "h-11 rounded-xl border-white/15 bg-white/5 text-white",
-                    "hover:bg-white/10",
+                    "h-11 rounded-xl border-blue-500/20 bg-blue-950/30 text-white",
+                    "hover:bg-blue-900/40",
                   )}
                   data-testid="button-download-resume"
                 >
@@ -377,105 +384,24 @@ function Hero() {
             <motion.div
               ref={ref}
               style={mounted ? { rotateX: rx, rotateY: ry } : undefined}
-              className={cn(
-                "glass relative overflow-hidden rounded-3xl p-5",
-                "border border-white/10",
-                "[transform-style:preserve-3d]",
-              )}
+              className="[transform-style:preserve-3d]"
               data-testid="card-hero-visual"
             >
-              <div className="noise pointer-events-none absolute inset-0" />
-
-              <div className="relative">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div
-                      className="font-mono text-xs tracking-widest text-white/55"
-                      data-testid="text-hero-panel-kicker"
-                    >
-                      LIVE SIGNAL
-                    </div>
-                    <div
-                      className="mt-2 font-[650] text-white"
-                      data-testid="text-hero-panel-title"
-                    >
-                      System Status
-                    </div>
-                  </div>
-                  <div
-                    className="h-2.5 w-2.5 rounded-full bg-[hsl(var(--secondary))] shadow-[0_0_28px_hsl(var(--secondary)/0.55)]"
-                    aria-hidden="true"
+              {/* Circular Profile Photo */}
+              <div className="relative mx-auto w-fit">
+                <div className="h-64 w-64 overflow-hidden rounded-full border-4 border-blue-500/30 shadow-[0_0_40px_hsl(var(--primary)/0.3)]">
+                  <img
+                    src="/profile.jpeg"
+                    alt={profile.name}
+                    className="h-full w-full object-cover"
+                    data-testid="img-profile"
                   />
                 </div>
-
-                <div className="mt-5 grid grid-cols-2 gap-3">
-                  {[
-                    { label: "UI Polish", value: "A+" },
-                    { label: "Speed", value: "Fast" },
-                    { label: "Accessibility", value: "Solid" },
-                    { label: "Motion", value: "Silky" },
-                  ].map((m) => (
-                    <div
-                      key={m.label}
-                      className="rounded-2xl border border-white/10 bg-white/5 p-4"
-                      data-testid={`card-metric-${m.label.toLowerCase().replace(/\s+/g, "-")}`}
-                    >
-                      <div
-                        className="text-xs text-white/55"
-                        data-testid={`text-metric-label-${m.label.toLowerCase().replace(/\s+/g, "-")}`}
-                      >
-                        {m.label}
-                      </div>
-                      <div
-                        className="mt-1 text-lg font-[650] text-white"
-                        data-testid={`text-metric-value-${m.label.toLowerCase().replace(/\s+/g, "-")}`}
-                      >
-                        {m.value}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <div
-                    className="text-xs text-white/55"
-                    data-testid="text-now-playing-label"
-                  >
-                    Now playing
-                  </div>
-                  <div className="mt-1 flex items-center justify-between gap-3">
-                    <div>
-                      <div
-                        className="font-[650] text-white"
-                        data-testid="text-now-playing-title"
-                      >
-                        Neon Focus
-                      </div>
-                      <div
-                        className="font-mono text-xs text-white/55"
-                        data-testid="text-now-playing-sub"
-                      >
-                        Deep work  UI engineering
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {Array.from({ length: 6 }).map((_, i) => (
-                        <motion.span
-                          key={i}
-                          className="block w-1.5 rounded-full bg-white/20"
-                          style={{ height: 10 + i * 3 }}
-                          animate={{ opacity: [0.25, 0.9, 0.25] }}
-                          transition={{
-                            duration: 1.2,
-                            repeat: Infinity,
-                            delay: i * 0.08,
-                          }}
-                          aria-hidden="true"
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                {/* Live indicator */}
+                <div
+                  className="absolute bottom-4 right-4 h-6 w-6 rounded-full border-4 border-[hsl(var(--background))] bg-[hsl(var(--secondary))] shadow-[0_0_28px_hsl(var(--secondary)/0.55)]"
+                  aria-hidden="true"
+                />
               </div>
             </motion.div>
           </div>
@@ -489,37 +415,37 @@ function About() {
   return (
     <section id="about" className="py-16 md:py-20" data-testid="section-about">
       <div className="mx-auto max-w-6xl px-4">
-        <SectionTitle kicker="ABOUT" title="A bit about me" />
+        <SectionTitle kicker="ABOUT" title="Rakesh G" />
         <div className="mt-6 grid gap-4 md:grid-cols-12">
           <GlassCard className="md:col-span-7">
-            <p className="text-white/75" data-testid="text-about-body">
-              Im a frontend-focused developer who loves building interfaces that feel
-              alive  smooth transitions, crisp typography, and thoughtful interaction
-              design. My sweet spot is turning messy requirements into clean
-              components and a cohesive visual system.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {["Motion", "Design systems", "Performance", "DX"].map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70"
-                  data-testid={`pill-about-${t.toLowerCase()}`}
-                >
-                  {t}
-                </span>
-              ))}
+            <div className="space-y-4 text-white/75 leading-relaxed" data-testid="text-about-body">
+              <p>
+                I am a passionate Computer Science Engineering student at Maharaja Institute of Technology, Mysore, with a strong foundation in programming, problem-solving, and modern web development. I enjoy turning ideas into functional, scalable, and user-friendly digital solutions through clean code and thoughtful design.
+              </p>
+              <p>
+                My technical skill set includes C, C++, Java, Python, HTML, and CSS, and I am continuously expanding my knowledge in software engineering, system design, and emerging technologies. I believe in learning by building, improving through challenges, and growing with every project I take on.
+              </p>
+              <p>
+                I have actively participated in national-level hackathons, coding programs, and technical contests, which have strengthened my ability to collaborate in teams, think critically under pressure, and deliver practical solutions in real-world scenarios.
+              </p>
+              <p>
+                Driven by curiosity and consistency, my goal is to contribute to innovative projects, develop reliable and scalable software systems, and grow as a professional who creates meaningful impact through technology.
+              </p>
             </div>
+
           </GlassCard>
           <GlassCard className="md:col-span-5">
             <div className="grid gap-3">
               {[
-                { label: "Focus", value: "Frontend + UI" },
-                { label: "Style", value: "Dark future / neon" },
+                { label: "Focus", value: "Full-Stack" },
                 { label: "Strength", value: "Polish + clarity" },
+                { label: "Education", value: "BE - CSE" },
+                { label: "College", value: "MIT, Mysore" },
+                { label: "Status", value: "Available for Work" },
               ].map((i) => (
                 <div
                   key={i.label}
-                  className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
+                  className="flex items-center justify-between rounded-2xl border border-blue-500/20 bg-blue-950/30 px-4 py-3"
                   data-testid={`row-about-${i.label.toLowerCase()}`}
                 >
                   <div className="text-sm text-white/65">{i.label}</div>
@@ -534,96 +460,24 @@ function About() {
   );
 }
 
-function Experience() {
-  return (
-    <section
-      id="experience"
-      className="py-16 md:py-20"
-      data-testid="section-experience"
-    >
-      <div className="mx-auto max-w-6xl px-4">
-        <SectionTitle kicker="EXPERIENCE" title="Where Ive built" />
-        <div className="mt-6 grid gap-4 md:grid-cols-12">
-          <GlassCard className="md:col-span-5">
-            <div className="space-y-4">
-              <div
-                className="text-white/70"
-                data-testid="text-experience-summary"
-              >
-                I like roles where I can own UI from first principles: tokens 
-                components  product polish.
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                <div className="text-xs text-white/55" data-testid="text-exp-note">
-                  Current focus
-                </div>
-                <div
-                  className="mt-1 font-[650] text-white"
-                  data-testid="text-exp-focus"
-                >
-                  Building delightful, performance-friendly interfaces.
-                </div>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="md:col-span-7">
-            <div className="space-y-5">
-              {experience.map((e) => (
-                <div
-                  key={e.id}
-                  className="rounded-2xl border border-white/10 bg-white/5 p-4"
-                  data-testid={`card-experience-${e.id}`}
-                >
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <div>
-                      <div
-                        className="font-[650] text-white"
-                        data-testid={`text-exp-title-${e.id}`}
-                      >
-                        {e.title}
-                      </div>
-                      <div
-                        className="text-sm text-white/65"
-                        data-testid={`text-exp-org-${e.id}`}
-                      >
-                        {e.org}
-                      </div>
-                    </div>
-                    <div
-                      className="font-mono text-xs text-white/55"
-                      data-testid={`text-exp-time-${e.id}`}
-                    >
-                      {e.timeframe}
-                    </div>
-                  </div>
-                  <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-white/70">
-                    {e.bullets.map((b, idx) => (
-                      <li
-                        key={idx}
-                        data-testid={`text-exp-bullet-${e.id}-${idx}`}
-                      >
-                        {b}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </GlassCard>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function Skills() {
   return (
     <section id="skills" className="py-16 md:py-20" data-testid="section-skills">
       <div className="mx-auto max-w-6xl px-4">
         <SectionTitle kicker="SKILLS" title="Tools I reach for" />
-        <div className="mt-6 grid gap-4 md:grid-cols-12">
-          {skills.map((s) => (
-            <GlassCard key={s.id} className="md:col-span-6">
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-12 gap-4">
+          {skills.map((s, idx) => (
+            <GlassCard
+              key={s.id}
+              className={cn(
+                "md:col-span-6 lg:col-span-4",
+                // Row 1 (Items 0, 1, 2) uses default lg:col-span-4
+                // Row 2 (Items 3, 4) should be centered together
+                idx === 3 ? "lg:col-start-3" : "", // Tools starts at Col 3
+                idx === 4 ? "lg:col-start-7 lg:col-span-4" : "", // Soft Skills starts at Col 7
+              )}
+            >
               <div className="flex items-center justify-between">
                 <div
                   className="font-[650] text-white"
@@ -640,7 +494,7 @@ function Skills() {
                 {s.items.map((i) => (
                   <span
                     key={i}
-                    className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70"
+                    className="rounded-full border border-blue-500/20 bg-blue-950/30 px-3 py-1 text-xs text-white/70"
                     data-testid={`pill-skill-${s.id}-${i.toLowerCase().replace(/\s+/g, "-")}`}
                   >
                     {i}
@@ -664,11 +518,11 @@ function Projects() {
     >
       <div className="mx-auto max-w-6xl px-4">
         <SectionTitle kicker="PROJECTS" title="Selected builds" />
-        <div className="mt-6 grid gap-4 md:grid-cols-12">
+        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((p) => (
-            <GlassCard key={p.id} className="md:col-span-4">
+            <GlassCard key={p.id}>
               <div className="flex items-start justify-between gap-3">
-                <div>
+                <div className="flex-1">
                   <div
                     className="font-[650] text-white"
                     data-testid={`text-project-title-${p.id}`}
@@ -676,24 +530,19 @@ function Projects() {
                     {p.title}
                   </div>
                   <div
-                    className="mt-2 text-sm text-white/70"
+                    className="mt-2 text-sm text-white/70 line-clamp-3"
                     data-testid={`text-project-desc-${p.id}`}
                   >
                     {p.description}
                   </div>
                 </div>
-                <ArrowRight
-                  className="mt-1 h-4 w-4 text-white/40"
-                  strokeWidth={2}
-                  aria-hidden="true"
-                />
               </div>
 
               <div className="mt-4 flex flex-wrap gap-2">
                 {p.stack.map((t) => (
                   <span
                     key={t}
-                    className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70"
+                    className="rounded-full border border-blue-500/20 bg-blue-950/30 px-3 py-1 text-xs text-white/70"
                     data-testid={`pill-project-${p.id}-${t.toLowerCase().replace(/\s+/g, "-")}`}
                   >
                     {t}
@@ -704,19 +553,23 @@ function Projects() {
               <div className="mt-5 flex items-center justify-between">
                 <a
                   href={p.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={cn(
                     "inline-flex items-center gap-2 text-sm text-white/70",
-                    "hover:text-white",
+                    "hover:text-white transition-colors",
                   )}
                   data-testid={`link-project-${p.id}`}
                 >
-                  View details
+                  View on GitHub
                   <ArrowRight className="h-4 w-4" strokeWidth={2} />
                 </a>
                 <div
-                  className="h-8 w-8 rounded-full border border-white/10 bg-white/5"
+                  className="grid h-8 w-8 place-items-center rounded-full border border-blue-500/20 bg-blue-950/30"
                   aria-hidden="true"
-                />
+                >
+                  <Github className="h-4 w-4 text-white/60" strokeWidth={1.8} />
+                </div>
               </div>
             </GlassCard>
           ))}
@@ -727,241 +580,411 @@ function Projects() {
 }
 
 function Education() {
+  const educationData = [
+    {
+      id: "edu-be",
+      degree: "Bachelor of Engineering",
+      field: "Computer Science & Engineering",
+      school: "Maharaja Institute of Technology, Mysore",
+      year: "2027",
+      score: "CGPA: 8.55",
+      icon: <GraduationCap className="h-5 w-5" />,
+      color: "blue",
+    },
+    {
+      id: "edu-puc",
+      degree: "Pre-University Course",
+      field: "Science Stream",
+      school: "Anikethana PU Science College, Mandya",
+      year: "2023",
+      score: "Percentage: 87.83%",
+      icon: <BookOpen className="h-5 w-5" />,
+      color: "cyan",
+    },
+    {
+      id: "edu-sslc",
+      degree: "SSLC",
+      field: "Secondary Education",
+      school: "Vinayaka High School, Taripura",
+      year: "2021",
+      score: "Percentage: 74.24%",
+      icon: <School className="h-5 w-5" />,
+      color: "indigo",
+    },
+  ];
+
   return (
-    <section
-      id="education"
-      className="py-16 md:py-20"
-      data-testid="section-education"
-    >
+    <section id="education" className="py-20 md:py-32" data-testid="section-education">
       <div className="mx-auto max-w-6xl px-4">
-        <SectionTitle kicker="EDUCATION" title="Learning timeline" />
-        <div className="mt-6 grid gap-4 md:grid-cols-12">
-          <GlassCard className="md:col-span-7">
-            <div className="space-y-4">
-              {[
-                {
-                  id: "edu-1",
-                  degree: "B.Tech / BE",
-                  school: "Your University",
-                  year: "2020  2024",
-                  note: "Coursework focused on systems, web, and engineering fundamentals.",
-                },
-              ].map((e) => (
-                <div
-                  key={e.id}
-                  className="rounded-2xl border border-white/10 bg-white/5 p-4"
-                  data-testid={`card-education-${e.id}`}
-                >
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <div>
-                      <div
-                        className="font-[650] text-white"
-                        data-testid={`text-edu-degree-${e.id}`}
-                      >
-                        {e.degree}
+        <SectionTitle kicker="EDUCATION" title="Academic Journey" />
+
+        <div className="mt-16 relative">
+          {/* Vertical Timeline Line */}
+          <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500/80 via-blue-500/40 to-transparent md:left-1/2 md:-ml-px" />
+
+          <div className="space-y-12">
+            {educationData.map((edu, idx) => (
+              <RevealSection key={edu.id} className={cn(
+                "relative flex flex-col md:flex-row md:items-center",
+                idx % 2 === 0 ? "md:flex-row-reverse" : ""
+              )}>
+                {/* Timeline Dot */}
+                <div className="absolute left-4 top-6 z-10 -ml-1.5 h-3 w-3 rounded-full bg-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.8)] md:left-1/2 md:top-1/2 md:-mt-1.5" />
+
+                {/* Content Card */}
+                <div className={cn(
+                  "ml-12 md:ml-0 md:w-1/2",
+                  idx % 2 === 0 ? "md:pl-16" : "md:pr-16"
+                )}>
+                  <GlassCard className="group transition-all duration-500 hover:border-blue-500/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]">
+                    <div className="flex items-center gap-4">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-950/30 text-blue-400 transition-transform group-hover:scale-110">
+                        {edu.icon}
                       </div>
-                      <div
-                        className="text-sm text-white/65"
-                        data-testid={`text-edu-school-${e.id}`}
-                      >
-                        {e.school}
+                      <div>
+                        <div className="font-mono text-xs font-medium tracking-wider text-blue-400/80">
+                          {edu.year}
+                        </div>
+                        <h3 className="mt-1 text-xl font-bold text-white group-hover:text-blue-300 transition-colors">
+                          {edu.degree}
+                        </h3>
                       </div>
                     </div>
-                    <div
-                      className="font-mono text-xs text-white/55"
-                      data-testid={`text-edu-year-${e.id}`}
-                    >
-                      {e.year}
+
+                    <div className="mt-4 space-y-1">
+                      <div className="text-sm font-semibold text-white/90">
+                        {edu.field}
+                      </div>
+                      <div className="text-sm text-white/60">
+                        {edu.school}
+                      </div>
                     </div>
-                  </div>
-                  <div
-                    className="mt-3 text-sm text-white/70"
-                    data-testid={`text-edu-note-${e.id}`}
-                  >
-                    {e.note}
-                  </div>
+
+                    <div className="mt-4 flex items-center justify-between">
+                      <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-xs font-bold text-blue-300">
+                        <span className="h-1 w-1 rounded-full bg-blue-400" />
+                        {edu.score}
+                      </div>
+                    </div>
+                  </GlassCard>
                 </div>
-              ))}
-            </div>
-          </GlassCard>
-          <GlassCard className="md:col-span-5">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <div className="text-xs text-white/55" data-testid="text-edu-tip">
-                Highlight
-              </div>
-              <div
-                className="mt-1 font-[650] text-white"
-                data-testid="text-edu-highlight"
-              >
-                Strong fundamentals + taste for UI detail.
-              </div>
-            </div>
-          </GlassCard>
+
+                {/* Date Label for Desktop (Hidden on Mobile) */}
+                <div className={cn(
+                  "hidden md:block md:w-1/2 md:px-16",
+                  idx % 2 === 0 ? "text-right" : "text-left"
+                )}>
+                  <span className="font-mono text-sm tracking-widest text-white/30">
+                    {edu.year.split(" ")[0]}
+                  </span>
+                </div>
+              </RevealSection>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function Contact() {
+function RevealSection({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
   return (
-    <section id="contact" className="py-16 md:py-24" data-testid="section-contact">
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function Contact() {
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSent, setIsSent] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      const data = {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        message: formData.get("message"),
+      };
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await response.text();
+        console.error("Non-JSON response received:", text);
+        throw new Error("The server returned an unexpected response (HTML instead of JSON). This usually happens if the backend server is not running or the route is incorrect.");
+      }
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(responseData.message || "Failed to send message");
+      }
+
+      if (responseData.emailStatus === "sent") {
+        toast({
+          title: "Message sent!",
+          description: "I've received your message and will get back to you soon.",
+        });
+        setIsSent(true);
+      } else if (responseData.emailStatus === "failed") {
+        toast({
+          title: "Message saved, but email delayed",
+          description: responseData.error || "The message was recorded, but sending the notification email failed. I'll check it manually.",
+          variant: "destructive",
+        });
+        setIsSent(true); // Still show success UI because it's in the DB
+      } else if (responseData.emailStatus === "skipped") {
+        toast({
+          title: "Message Saved",
+          description: responseData.warning || "Server is in development mode. Email delivery skipped.",
+          variant: "default",
+        });
+        setIsSent(true);
+      } else {
+        setIsSent(true);
+      }
+    } catch (error: any) {
+      console.error(error);
+      toast({
+        title: "Error",
+        description: error.message || "Something went wrong. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <section
+      id="contact"
+      className="py-16 md:py-24"
+      data-testid="section-contact"
+    >
       <div className="mx-auto max-w-6xl px-4">
-        <div className="grid gap-4 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <SectionTitle kicker="CONTACT" title="Lets build" />
-            <p
-              className="mt-4 text-white/70"
-              data-testid="text-contact-body"
-            >
-              Want to collaborate or have a role that fits? Send a message and Ill
-              get back quickly.
-            </p>
-            <div className="mt-6 space-y-3">
-              <a
-                href={profile.socials.email}
-                className={cn(
-                  "glass block rounded-2xl px-4 py-3 text-white/80",
-                  "border border-white/10 hover:bg-white/5",
-                )}
-                data-testid="link-email-cta"
+        <RevealSection>
+          <div className="grid gap-4 md:grid-cols-12">
+            <div className="md:col-span-5">
+              <SectionTitle kicker="CONTACT" title="" kickerClassName="text-sm md:text-base text-white/80" />
+              <p
+                className="mt-4 text-white/70"
+                data-testid="text-contact-body"
               >
-                rakesh@example.com
-              </a>
-              <div
-                className="rounded-2xl border border-white/10 bg-white/5 p-4"
-                data-testid="card-contact-note"
-              >
-                <div className="text-xs text-white/55">Response time</div>
-                <div className="mt-1 font-[650] text-white">Within 24 hours</div>
+                Want to collaborate or have a role that fits? Send a message and I ll
+                get back quickly.
+              </p>
+              <div className="mt-6 space-y-3">
+                <a
+                  href={profile.socials.email}
+                  className={cn(
+                    "glass block rounded-2xl px-4 py-3 text-white/80",
+                    "border border-white/10 hover:bg-white/5",
+                  )}
+                  data-testid="link-email-cta"
+                >
+                  rakeshgofficial07@gmail.com
+                </a>
+                <div
+                  className="rounded-2xl border border-blue-500/20 bg-blue-950/30 p-4"
+                  data-testid="card-contact-note"
+                >
+                  <div className="text-xs text-white/55">Response time</div>
+                  <div className="mt-1 font-[650] text-white">Within 24 hours</div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="md:col-span-7">
-            <GlassCard>
-              <form
-                className="grid gap-3"
-                onSubmit={(e) => e.preventDefault()}
-                data-testid="form-contact"
-              >
-                <div className="grid gap-2">
-                  <label
-                    className="text-sm text-white/70"
-                    htmlFor="name"
-                    data-testid="label-name"
+            <div className="md:col-span-7">
+              <GlassCard>
+                {isSent ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex min-h-[300px] flex-col items-center justify-center text-center"
                   >
-                    Name
-                  </label>
-                  <input
-                    id="name"
-                    className={cn(
-                      "h-11 rounded-xl border border-white/10 bg-white/5 px-3",
-                      "text-white placeholder:text-white/35",
-                      "outline-none focus:ring-2 focus:ring-[hsl(var(--ring)/0.35)]",
-                    )}
-                    placeholder="Your name"
-                    data-testid="input-name"
-                  />
-                </div>
+                    <div className="mb-4 grid h-16 w-16 place-items-center rounded-full bg-green-500/20 text-green-400">
+                      <ArrowRight className="h-8 w-8 -rotate-45" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white">Message sent!</h3>
+                    <p className="mt-2 text-white/70">
+                      Thanks for reaching out. I ll get back to you soon.
+                    </p>
+                    <Button
+                      variant="outline"
+                      className="mt-6 border-white/10 text-white hover:bg-white/5"
+                      onClick={() => setIsSent(false)}
+                    >
+                      Send another
+                    </Button>
+                  </motion.div>
+                ) : (
+                  <form
+                    className="grid gap-3"
+                    onSubmit={handleSubmit}
+                    data-testid="form-contact"
+                  >
+                    <div className="grid gap-2">
+                      <label
+                        className="text-sm text-white/70"
+                        htmlFor="name"
+                        data-testid="label-name"
+                      >
+                        Name
+                      </label>
+                      <input
+                        id="name"
+                        name="name"
+                        required
+                        className={cn(
+                          "h-11 rounded-xl border border-blue-500/20 bg-blue-950/30 px-3",
+                          "text-white placeholder:text-white/35",
+                          "outline-none focus:ring-2 focus:ring-[hsl(var(--ring)/0.35)]",
+                        )}
+                        placeholder="Your name"
+                        data-testid="input-name"
+                      />
+                    </div>
 
-                <div className="grid gap-2">
-                  <label
-                    className="text-sm text-white/70"
-                    htmlFor="email"
-                    data-testid="label-email"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    className={cn(
-                      "h-11 rounded-xl border border-white/10 bg-white/5 px-3",
-                      "text-white placeholder:text-white/35",
-                      "outline-none focus:ring-2 focus:ring-[hsl(var(--ring)/0.35)]",
-                    )}
-                    placeholder="you@domain.com"
-                    data-testid="input-email"
-                  />
-                </div>
+                    <div className="grid gap-2">
+                      <label
+                        className="text-sm text-white/70"
+                        htmlFor="email"
+                        data-testid="label-email"
+                      >
+                        Email
+                      </label>
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                        className={cn(
+                          "h-11 rounded-xl border border-blue-500/20 bg-blue-950/30 px-3",
+                          "text-white placeholder:text-white/35",
+                          "outline-none focus:ring-2 focus:ring-[hsl(var(--ring)/0.35)]",
+                        )}
+                        placeholder="you@domain.com"
+                        data-testid="input-email"
+                      />
+                    </div>
 
-                <div className="grid gap-2">
-                  <label
-                    className="text-sm text-white/70"
-                    htmlFor="message"
-                    data-testid="label-message"
-                  >
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    rows={5}
-                    className={cn(
-                      "rounded-xl border border-white/10 bg-white/5 px-3 py-3",
-                      "text-white placeholder:text-white/35",
-                      "outline-none focus:ring-2 focus:ring-[hsl(var(--ring)/0.35)]",
-                    )}
-                    placeholder="Tell me what youre building"
-                    data-testid="input-message"
-                  />
-                </div>
+                    <div className="grid gap-2">
+                      <label
+                        className="text-sm text-white/70"
+                        htmlFor="message"
+                        data-testid="label-message"
+                      >
+                        Message
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        rows={5}
+                        required
+                        className={cn(
+                          "rounded-xl border border-blue-500/20 bg-blue-950/30 px-3 py-3",
+                          "text-white placeholder:text-white/35",
+                          "outline-none focus:ring-2 focus:ring-[hsl(var(--ring)/0.35)]",
+                        )}
+                        placeholder="Tell me what you re building "
+                        data-testid="input-message"
+                      />
+                    </div>
 
-                <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
-                  <div
-                    className="text-xs text-white/50"
-                    data-testid="text-contact-footnote"
-                  >
-                    This is a prototype form (no backend). Itll still feel great.
-                  </div>
-                  <Button
-                    type="submit"
-                    className={cn(
-                      "h-11 rounded-xl bg-[hsl(var(--secondary))] text-[hsl(var(--secondary-foreground))]",
-                      "shadow-[0_0_0_1px_hsl(var(--secondary)/0.22)_inset,0_12px_50px_hsl(var(--secondary)/0.22)]",
-                      "hover:brightness-110",
-                    )}
-                    data-testid="button-submit-contact"
-                  >
-                    Send message
-                    <ArrowRight className="ml-2 h-4 w-4" strokeWidth={2} />
-                  </Button>
-                </div>
-              </form>
-            </GlassCard>
-          </div>
-        </div>
-
-        <footer
-          className="mt-14 border-t border-white/10 pt-8"
-          data-testid="footer"
-        >
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="text-sm text-white/55" data-testid="text-copyright">
-               {new Date().getFullYear()} {profile.name}
+                    <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
+                      <div
+                        className="text-xs text-white/50"
+                        data-testid="text-contact-footnote"
+                      >
+                        I ll get back to you as soon as possible.
+                      </div>
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={cn(
+                          "h-11 min-w-[140px] rounded-xl bg-[hsl(var(--secondary))] text-[hsl(var(--secondary-foreground))]",
+                          "shadow-[0_0_0_1px_hsl(var(--secondary)/0.22)_inset,0_12px_50px_hsl(var(--secondary)/0.22)]",
+                          "hover:brightness-110 disabled:opacity-70",
+                        )}
+                        data-testid="button-submit-contact"
+                      >
+                        {isSubmitting ? (
+                          <span className="flex items-center gap-2">
+                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                            Sending...
+                          </span>
+                        ) : (
+                          <>
+                            Send message
+                            <ArrowRight
+                              className="ml-2 h-4 w-4"
+                              strokeWidth={2}
+                            />
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </form>
+                )}
+              </GlassCard>
             </div>
-            <div className="flex items-center gap-2">
-              <a
-                href={profile.socials.github}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/70 hover:bg-white/10 hover:text-white"
-                data-testid="link-footer-github"
-              >
-                GitHub
-              </a>
-              <a
-                href={profile.socials.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/70 hover:bg-white/10 hover:text-white"
-                data-testid="link-footer-linkedin"
-              >
-                LinkedIn
-              </a>
-            </div>
           </div>
-        </footer>
+
+          <footer
+            className="mt-14 border-t border-blue-500/20 pt-8"
+            data-testid="footer"
+          >
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="text-sm text-white/55" data-testid="text-copyright">
+                {new Date().getFullYear()} {profile.name}
+              </div>
+              <div className="flex items-center gap-2">
+                <a
+                  href={profile.socials.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-xl border border-blue-500/20 bg-blue-950/30 px-3 py-2 text-sm text-white/70 hover:bg-blue-900/40 hover:text-white"
+                  data-testid="link-footer-github"
+                >
+                  GitHub
+                </a>
+                <a
+                  href={profile.socials.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-xl border border-blue-500/20 bg-blue-950/30 px-3 py-2 text-sm text-white/70 hover:bg-blue-900/40 hover:text-white"
+                  data-testid="link-footer-linkedin"
+                >
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+          </footer>
+        </RevealSection>
       </div>
     </section>
   );
@@ -970,9 +993,9 @@ function Contact() {
 export default function Home() {
   const bg = useMemo(() => {
     return [
-      "radial-gradient(900px circle at 30% 20%, hsl(268 96% 66% / 0.20), transparent 60%)",
-      "radial-gradient(900px circle at 75% 10%, hsl(200 96% 62% / 0.16), transparent 60%)",
-      "radial-gradient(1000px circle at 55% 80%, hsl(316 95% 64% / 0.12), transparent 65%)",
+      "radial-gradient(900px circle at 30% 20%, hsl(217 91% 60% / 0.01), transparent 60%)",
+      "radial-gradient(75% 10% at 75% 10%, hsl(190 90% 50% / 0.008), transparent 60%)",
+      "radial-gradient(1000px circle at 55% 80%, hsl(200 95% 60% / 0.005), transparent 65%)",
     ].join(",");
   }, []);
 
@@ -981,11 +1004,18 @@ export default function Home() {
       <TopNav />
       <main className="relative">
         <Hero />
-        <About />
-        <Experience />
-        <Skills />
-        <Projects />
-        <Education />
+        <RevealSection>
+          <About />
+        </RevealSection>
+        <RevealSection>
+          <Skills />
+        </RevealSection>
+        <RevealSection>
+          <Projects />
+        </RevealSection>
+        <RevealSection>
+          <Education />
+        </RevealSection>
         <Contact />
       </main>
     </div>
