@@ -3,7 +3,6 @@ import { ArrowRight, Download, Github, Linkedin, Mail, GraduationCap, BookOpen, 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 
 const profile = {
   name: "Rakesh G",
@@ -13,7 +12,7 @@ const profile = {
   location: "India",
   socials: {
     github: "https://github.com/",
-    linkedin: "https://www.linkedin.com/",
+    linkedin: "https://www.linkedin.com/in/thenameisrakesh",
     email: "mailto:rakeshgofficial07@gmail.com",
   },
 };
@@ -180,11 +179,11 @@ function TopNav() {
         >
           <div className="flex items-center gap-3">
             <div
-              className="grid h-9 w-9 place-items-center rounded-xl bg-blue-950/30"
+              className="h-9 w-9 overflow-hidden rounded-xl bg-blue-950/30"
               data-testid="img-avatar"
               aria-hidden="true"
             >
-              <span className="font-mono text-sm text-white/80">RG</span>
+              <img src="/profile.jpeg" alt={`${profile.name} avatar`} className="h-full w-full object-cover" />
             </div>
             <div className="leading-tight">
               <div
@@ -355,6 +354,7 @@ function Hero() {
                 </Button>
 
                 <Button
+                  asChild
                   variant="outline"
                   className={cn(
                     "h-11 rounded-xl border-blue-500/20 bg-blue-950/30 text-white",
@@ -362,20 +362,13 @@ function Hero() {
                   )}
                   data-testid="button-download-resume"
                 >
-                  <Download className="mr-2 h-4 w-4" strokeWidth={2} />
-                  Download Resume
+                  <a href="https://drive.google.com/file/d/1i1ZjVkih7Mb6_9m65dSmkZVrV-VvdAH6/view?usp=drive_link" target="_blank" rel="noopener noreferrer">
+                    <Download className="mr-2 h-4 w-4" strokeWidth={2} />
+                    Download Resume
+                  </a>
                 </Button>
 
-                <Link
-                  href="#contact"
-                  className={cn(
-                    "text-sm text-white/70 underline underline-offset-4",
-                    "decoration-white/15 hover:text-white",
-                  )}
-                  data-testid="link-contact"
-                >
-                  Contact me
-                </Link>
+
               </div>
             </motion.div>
           </div>
@@ -709,76 +702,6 @@ function RevealSection({
 }
 
 function Contact() {
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSent, setIsSent] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      const formData = new FormData(e.currentTarget);
-      const data = {
-        name: formData.get("name"),
-        email: formData.get("email"),
-        message: formData.get("message"),
-      };
-
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      const contentType = response.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        const text = await response.text();
-        console.error("Non-JSON response received:", text);
-        throw new Error("The server returned an unexpected response (HTML instead of JSON). This usually happens if the backend server is not running or the route is incorrect.");
-      }
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(responseData.message || "Failed to send message");
-      }
-
-      if (responseData.emailStatus === "sent") {
-        toast({
-          title: "Message sent!",
-          description: "I've received your message and will get back to you soon.",
-        });
-        setIsSent(true);
-      } else if (responseData.emailStatus === "failed") {
-        toast({
-          title: "Message saved, but email delayed",
-          description: responseData.error || "The message was recorded, but sending the notification email failed. I'll check it manually.",
-          variant: "destructive",
-        });
-        setIsSent(true); // Still show success UI because it's in the DB
-      } else if (responseData.emailStatus === "skipped") {
-        toast({
-          title: "Message Saved",
-          description: responseData.warning || "Server is in development mode. Email delivery skipped.",
-          variant: "default",
-        });
-        setIsSent(true);
-      } else {
-        setIsSent(true);
-      }
-    } catch (error: any) {
-      console.error(error);
-      toast({
-        title: "Error",
-        description: error.message || "Something went wrong. Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <section
       id="contact"
@@ -794,8 +717,7 @@ function Contact() {
                 className="mt-4 text-white/70"
                 data-testid="text-contact-body"
               >
-                Want to collaborate or have a role that fits? Send a message and I ll
-                get back quickly.
+                Want to collaborate or have a role that fits? Reach out via email and I9ll get back quickly.
               </p>
               <div className="mt-6 space-y-3">
                 <a
@@ -820,136 +742,14 @@ function Contact() {
 
             <div className="md:col-span-7">
               <GlassCard>
-                {isSent ? (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="flex min-h-[300px] flex-col items-center justify-center text-center"
-                  >
-                    <div className="mb-4 grid h-16 w-16 place-items-center rounded-full bg-green-500/20 text-green-400">
-                      <ArrowRight className="h-8 w-8 -rotate-45" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-white">Message sent!</h3>
-                    <p className="mt-2 text-white/70">
-                      Thanks for reaching out. I ll get back to you soon.
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="mt-6 border-white/10 text-white hover:bg-white/5"
-                      onClick={() => setIsSent(false)}
-                    >
-                      Send another
-                    </Button>
-                  </motion.div>
-                ) : (
-                  <form
-                    className="grid gap-3"
-                    onSubmit={handleSubmit}
-                    data-testid="form-contact"
-                  >
-                    <div className="grid gap-2">
-                      <label
-                        className="text-sm text-white/70"
-                        htmlFor="name"
-                        data-testid="label-name"
-                      >
-                        Name
-                      </label>
-                      <input
-                        id="name"
-                        name="name"
-                        required
-                        className={cn(
-                          "h-11 rounded-xl border border-blue-500/20 bg-blue-950/30 px-3",
-                          "text-white placeholder:text-white/35",
-                          "outline-none focus:ring-2 focus:ring-[hsl(var(--ring)/0.35)]",
-                        )}
-                        placeholder="Your name"
-                        data-testid="input-name"
-                      />
-                    </div>
-
-                    <div className="grid gap-2">
-                      <label
-                        className="text-sm text-white/70"
-                        htmlFor="email"
-                        data-testid="label-email"
-                      >
-                        Email
-                      </label>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
-                        className={cn(
-                          "h-11 rounded-xl border border-blue-500/20 bg-blue-950/30 px-3",
-                          "text-white placeholder:text-white/35",
-                          "outline-none focus:ring-2 focus:ring-[hsl(var(--ring)/0.35)]",
-                        )}
-                        placeholder="you@domain.com"
-                        data-testid="input-email"
-                      />
-                    </div>
-
-                    <div className="grid gap-2">
-                      <label
-                        className="text-sm text-white/70"
-                        htmlFor="message"
-                        data-testid="label-message"
-                      >
-                        Message
-                      </label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        rows={5}
-                        required
-                        className={cn(
-                          "rounded-xl border border-blue-500/20 bg-blue-950/30 px-3 py-3",
-                          "text-white placeholder:text-white/35",
-                          "outline-none focus:ring-2 focus:ring-[hsl(var(--ring)/0.35)]",
-                        )}
-                        placeholder="Tell me what you re building "
-                        data-testid="input-message"
-                      />
-                    </div>
-
-                    <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
-                      <div
-                        className="text-xs text-white/50"
-                        data-testid="text-contact-footnote"
-                      >
-                        I ll get back to you as soon as possible.
-                      </div>
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className={cn(
-                          "h-11 min-w-[140px] rounded-xl bg-[hsl(var(--secondary))] text-[hsl(var(--secondary-foreground))]",
-                          "shadow-[0_0_0_1px_hsl(var(--secondary)/0.22)_inset,0_12px_50px_hsl(var(--secondary)/0.22)]",
-                          "hover:brightness-110 disabled:opacity-70",
-                        )}
-                        data-testid="button-submit-contact"
-                      >
-                        {isSubmitting ? (
-                          <span className="flex items-center gap-2">
-                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                            Sending...
-                          </span>
-                        ) : (
-                          <>
-                            Send message
-                            <ArrowRight
-                              className="ml-2 h-4 w-4"
-                              strokeWidth={2}
-                            />
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </form>
-                )}
+                <div className="flex min-h-[300px] flex-col items-center justify-center text-center">
+                  <div className="mb-4 grid h-16 w-16 place-items-center rounded-full bg-[hsl(var(--secondary))] text-[hsl(var(--secondary-foreground))]">
+                    <Mail className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white">Email me</h3>
+                  <p className="mt-2 text-white/70">Prefer sending an email? Click the button below to compose a message.</p>
+                  <a href={profile.socials.email} className="mt-6 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-[hsl(var(--secondary))] px-5 py-3 text-sm font-semibold text-[hsl(var(--secondary-foreground))] hover:brightness-110">Send Email</a>
+                </div>
               </GlassCard>
             </div>
           </div>
@@ -980,6 +780,13 @@ function Contact() {
                   data-testid="link-footer-linkedin"
                 >
                   LinkedIn
+                </a>
+                <a
+                  href={profile.socials.email}
+                  className="rounded-xl border border-blue-500/20 bg-blue-950/30 px-3 py-2 text-sm text-white/70 hover:bg-blue-900/40 hover:text-white"
+                  data-testid="link-footer-email"
+                >
+                  Email
                 </a>
               </div>
             </div>
