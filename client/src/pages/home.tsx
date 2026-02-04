@@ -11,7 +11,7 @@ const profile = {
     "Building through challenges. Growing through code.",
   location: "India",
   socials: {
-    github: "https://github.com/",
+    github: "https://github.com/Thenameisrakesh",
     linkedin: "https://www.linkedin.com/in/thenameisrakesh",
     email: "mailto:rakeshgofficial07@gmail.com",
   },
@@ -557,12 +557,16 @@ function Projects() {
                   View on GitHub
                   <ArrowRight className="h-4 w-4" strokeWidth={2} />
                 </a>
-                <div
+                <a
+                  href={profile.socials.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="grid h-8 w-8 place-items-center rounded-full border border-blue-500/20 bg-blue-950/30"
-                  aria-hidden="true"
+                  data-testid={`link-project-github-${p.id}`}
+                  aria-label="GitHub profile"
                 >
                   <Github className="h-4 w-4 text-white/60" strokeWidth={1.8} />
-                </div>
+                </a>
               </div>
             </GlassCard>
           ))}
