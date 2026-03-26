@@ -404,6 +404,7 @@ function Hero() {
   );
 }
 
+
 function About() {
   return (
     <section id="about" className="py-16 md:py-20" data-testid="section-about">
